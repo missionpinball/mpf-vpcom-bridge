@@ -4,20 +4,24 @@ Based on proc-visual-pinball of destruk, Gerry Stellenberg, Adam Preble and Mich
 """
 import asyncio
 import sys
+import logging
 
 try:
     import win32com
     import win32com.server.util
     from win32com.server.util import wrap, unwrap
     import pythoncom
+    from win32com.server.exception import COMException
+    import winerror
 except ImportError:
     win32com = None
     util = None
     wrap = None
     unwrap = None
     pythoncom = None
+    COMException = AssertionError
+    winerror = None
 
-import logging
 from mpf.core.bcp.bcp_socket_client import AsyncioBcpClientSocket
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
@@ -132,8 +136,11 @@ class Controller:
 
     def _connect(self):
         """Connect to MPF."""
-        reader, writer = self.loop.run_until_complete(asyncio.open_connection("localhost", 5051))
-        self.bcp_client = AsyncioBcpClientSocket(writer, reader)
+        try:
+            reader, writer = self.loop.run_until_complete(asyncio.open_connection("localhost", 5051))
+            self.bcp_client = AsyncioBcpClientSocket(writer, reader)
+        except Exception as e:
+            raise COMException(desc="Failed to connect to MPF: {}".format(e), scode=winerror.E_FAIL)
 
     def Run(self, extra_arg=None):
         """Connect to MPF."""
@@ -172,56 +179,70 @@ class Controller:
         wrapped_games = wrap (games)
         return wrapped_games
 
+    def _raise_error(self, desc):
+        raise COMException(desc=desc, scode=winerror.E_FAIL)
+
     def _dispatch_to_mpf(self, command, **params):
         """Dispatch to MPF and wait for result."""
         params["subcommand"] = command
-        self.bcp_client.send("vpcom_bridge", params)
-        response = self.loop.run_until_complete(self.bcp_client.wait_for_response("vpcom_bridge_response"))
-        return response[1]
+        try:
+            self.bcp_client.send("vpcom_bridge", params)
+            response = self.loop.run_until_complete(self.bcp_client.wait_for_response("vpcom_bridge_response"))
+            response_data = response[1]
+            if "error" in response_data:
+                self._raise_error(desc="MPF reported an error as response to command {} ({}): {}".format(
+                    command, params, response_data["error"]))
+            if "result" not in response_data:
+                self._raise_error(desc="MPF did not return a result {} ({}): {}".format(
+                    command, params, response_data))
+            return response_data["result"]
+        except Exception as e:
+            self._raise_error(desc="Failed to communicate with MPF at command {} ({}): {}".format(
+                command, params, e))
 
     def Switch(self, number):
         """Return the current value of the requested switch."""
-        return self._dispatch_to_mpf("Switch", number=number)
+        return self._dispatch_to_mpf("get_switch", number=number)
 
     def SetSwitch(self, number, value):
         """Set the value of the requested switch."""
-        return self._dispatch_to_mpf("SetSwitch", number=number, value=value)
+        return self._dispatch_to_mpf("set_switch", number=number, value=value)
 
     def Mech(self, number):
         """Currently unused."""
-        return self._dispatch_to_mpf("Mech", number=number)
+        return self._dispatch_to_mpf("get_mech", number=number)
 
     def SetMech(self, number):
         """Currently unused."""
-        return self._dispatch_to_mpf("SetMech", number=number)
+        return self._dispatch_to_mpf("set_mech", number=number)
 
     def GetMech(self, number):
         """Currently unused."""
-        return self._dispatch_to_mpf("GetMech", number=number)
+        return self._dispatch_to_mpf("get_mech", number=number)
 
     def ChangedSolenoids(self):
         """Return a list of changed coils."""
-        return self._dispatch_to_mpf("ChangedSolenoids")
+        return self._dispatch_to_mpf("get_changed_solenoids")
 
     def ChangedLamps(self):
         """Return a list of changed lamps."""
-        return self._dispatch_to_mpf("ChangedLamps")
+        return self._dispatch_to_mpf("get_changed_lamps")
 
     def ChangedGIStrings(self):
         """Return a list of changed GI strings."""
-        return self._dispatch_to_mpf("ChangedGIStrings")
+        return self._dispatch_to_mpf("get_changed_gi_strings")
 
     def getGIStates(self):
         """Get the current state of the GI strings."""
-        return self._dispatch_to_mpf("getGIStates")
+        return self._dispatch_to_mpf("get_gi_states")
 
     def getLampStates(self):
         """ Gets the current state of the lamps. """
-        return self._dispatch_to_mpf("getLampStates")
+        return self._dispatch_to_mpf("get_lamp_states")
 
     def getCoilStates(self):
         """ Gets the current state of the coils. """
-        return self._dispatch_to_mpf("getCoilStates")
+        return self._dispatch_to_mpf("get_coil_states")
 
 
 def Register(pyclass=Controller, p_game=None):
