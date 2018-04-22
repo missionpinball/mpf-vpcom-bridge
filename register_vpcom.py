@@ -69,8 +69,6 @@ class Controller:
     ]
     _reg_progid_ = "MPF.Controller"                         # Visual MPF Controller
     _reg_clsid_ = "{196FF002-17F9-4714-4242-A7BD39AD413B}"  # use a unique class guid for Visual MPF Controller
-
-                                                            # on next play
     _public_attrs_ = [
         'Version',
         'GameName',
@@ -202,6 +200,10 @@ class Controller:
 
     def Switch(self, number):
         """Return the current value of the requested switch."""
+        return self._dispatch_to_mpf("switch", number=number)
+
+    def GetSwitch(self, number):
+        """Return the current value of the requested switch."""
         return self._dispatch_to_mpf("get_switch", number=number)
 
     def SetSwitch(self, number, value):
@@ -210,11 +212,11 @@ class Controller:
 
     def Mech(self, number):
         """Currently unused."""
-        return self._dispatch_to_mpf("get_mech", number=number)
+        return self._dispatch_to_mpf("mech", number=number)
 
-    def SetMech(self, number):
+    def SetMech(self, number, value):
         """Currently unused."""
-        return self._dispatch_to_mpf("set_mech", number=number)
+        return self._dispatch_to_mpf("set_mech", number=number, value=value)
 
     def GetMech(self, number):
         """Currently unused."""
@@ -222,27 +224,15 @@ class Controller:
 
     def ChangedSolenoids(self):
         """Return a list of changed coils."""
-        return self._dispatch_to_mpf("get_changed_solenoids")
+        return self._dispatch_to_mpf("changed_solenoids")
 
     def ChangedLamps(self):
         """Return a list of changed lamps."""
-        return self._dispatch_to_mpf("get_changed_lamps")
+        return self._dispatch_to_mpf("changed_lamps")
 
     def ChangedGIStrings(self):
         """Return a list of changed GI strings."""
-        return self._dispatch_to_mpf("get_changed_gi_strings")
-
-    def getGIStates(self):
-        """Get the current state of the GI strings."""
-        return self._dispatch_to_mpf("get_gi_states")
-
-    def getLampStates(self):
-        """ Gets the current state of the lamps. """
-        return self._dispatch_to_mpf("get_lamp_states")
-
-    def getCoilStates(self):
-        """ Gets the current state of the coils. """
-        return self._dispatch_to_mpf("get_coil_states")
+        return self._dispatch_to_mpf("changed_gi_strings")
 
 
 def Register(pyclass=Controller, p_game=None):
