@@ -65,7 +65,9 @@ class Controller:
     _public_methods_ = [
         'Run',
         'Stop',
-        'PrintGlobal'
+        'PrintGlobal',
+        'PulseSW',
+        'IsCoilActive'
     ]
     _reg_progid_ = "MPF.Controller"                         # Visual MPF Controller
     _reg_clsid_ = "{196FF002-17F9-4714-4242-A7BD39AD413B}"  # use a unique class guid for Visual MPF Controller
@@ -86,6 +88,7 @@ class Controller:
         'ChangedSolenoids',
         'ChangedGIStrings',
         'ChangedLamps',
+        'HardwareRules',
         'GetMech'
     ]
 
@@ -94,6 +97,7 @@ class Controller:
         'ChangedSolenoids',
         'ChangedLamps',
         'ChangedGIStrings',
+        'HardwareRules',
         'GetMech'
     ]
 
@@ -210,6 +214,10 @@ class Controller:
         """Set the value of the requested switch."""
         return self._dispatch_to_mpf("set_switch", number=number, value=value)
 
+    def PulseSW(self, number):
+        """Pulse Switch."""
+        return self._dispatch_to_mpf("pulsesw", number=number)
+
     def Mech(self, number):
         """Currently unused."""
         return self._dispatch_to_mpf("mech", number=number)
@@ -233,6 +241,14 @@ class Controller:
     def ChangedGIStrings(self):
         """Return a list of changed GI strings."""
         return self._dispatch_to_mpf("changed_gi_strings")
+
+    def HardwareRules(self):
+        """Return a list of MPF Hardware Rules for autofire coils."""
+        return self._dispatch_to_mpf("get_hardwarerules")
+
+    def IsCoilActive(self, number):
+        """Return True if a MPF Hardware Rule for the coil(number) exists."""
+        return self._dispatch_to_mpf("get_coilactive", number=number)
 
 
 def Register(pyclass=Controller, p_game=None):
