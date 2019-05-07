@@ -4,6 +4,9 @@ hardware:
     platform: virtual_pinball
 
 switches:
+    s_start:
+        number: 0
+        tags: start
     s_test00:
         number: 1
     s_test37:
@@ -11,6 +14,8 @@ switches:
     s_test77_nc:
         number: 3
         type: 'NC'
+    s_top_a:
+        number: swa
 
 coils:
     c_test:
@@ -19,15 +24,36 @@ coils:
         number: 1
         default_hold_power: 1.0
     c_trough_eject:
-        number: 2
-        default_pulse_ms: 3s
+        number: coil2
+        default_pulse_ms: 3ms
 
 lights:
   test_light:
-    number: 3
+    number: lamp3
   test_light2:
     number: 15
     subtype: matrix
   test_gi:
     number: 15
     subtype: gi
+
+autofire_coils:
+    jet:
+        coil: c_test
+        switch: s_test00
+
+playfields: 
+  playfield: 
+    default_source_device: bd_trough 
+    tags: default
+
+ball_devices:
+  bd_trough:
+    tags: trough, home, drain
+    ball_switches: s_test00
+    eject_coil: c_trough_eject
+    eject_targets: playfield
+    entrance_count_delay: 300ms        
+
+modes:
+  - base
