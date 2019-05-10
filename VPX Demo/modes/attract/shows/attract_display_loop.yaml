@@ -1,0 +1,11 @@
+#show_version=5
+- duration: 200ms
+  slides:
+    awesome_slide:
+      widgets:
+      - type: text
+        text: GAME OVER
+        z: 10
+        y: 15
+        style: point_display
+        

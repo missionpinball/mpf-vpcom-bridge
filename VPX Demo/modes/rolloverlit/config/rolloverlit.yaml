@@ -1,0 +1,19 @@
+#config_version=5
+mode:
+    start_events: rollovers_lit_complete
+    stop_events: target_hit
+    priority: 110
+
+show_player:
+    mode_rolloverlit_started: target_lit_loop
+    
+shows:
+    target_lit_loop:
+        - duration: 1s
+          lights: 
+              light_target5k: ff
+    
+variable_player: 
+    target_hit:
+        score: 5000
+            

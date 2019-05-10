@@ -1,0 +1,138 @@
+#show_version=5
+- duration: 200ms
+  slides:
+    awesome_slide:
+      widgets:
+      # - type: image
+        # image: Idle1
+      - type: text
+        text: (score)
+        number_grouping: true
+        min_digits: 2
+        z: 10
+        y: 20
+        style: point_display
+        
+      - type: text
+        text: PLAYER (number)
+        z: 10
+        y: 0
+        x: 1
+        style: status_display
+        anchor_x: left
+        anchor_y: bottom
+      - type: text
+        text: BALL (ball)
+        z: 10
+        y: 0
+        x: right
+        style: status_display
+        anchor_x: right
+        anchor_y: bottom
+  lights: 
+    light1: ff     
+    light2: 0 
+    light3: 0 
+    
+- duration: 200ms
+  slides:
+    press_start:
+      widgets:
+      # - type: image
+        # image: Idle2
+      - type: text
+        text: (score)
+        number_grouping: true
+        min_digits: 2
+        z: 10
+        y: 20
+        style: point_display
+      - type: text
+        text: PLAYER (number)
+        z: 10
+        y: 0
+        x: 1
+        style: status_display
+        anchor_x: left
+        anchor_y: bottom
+      - type: text
+        text: BALL (ball)
+        z: 10
+        y: 0
+        x: right
+        style: status_display
+        anchor_x: right
+        anchor_y: bottom
+  lights: 
+    light1: 0 
+    light2: ff 
+    light3: 0 
+
+- duration: 200ms
+  slides:
+    mission_pinball:
+      widgets:
+      # - type: image
+        # image: Idle3
+      - type: text
+        text: (score)
+        number_grouping: true
+        min_digits: 2
+        z: 10
+        y: 20
+        style: point_display
+      - type: text
+        text: PLAYER (number)
+        z: 10
+        y: 0
+        x: 1
+        style: status_display
+        anchor_x: left
+        anchor_y: bottom
+      - type: text
+        text: BALL (ball)
+        z: 10
+        y: 0
+        x: right
+        style: status_display
+        anchor_x: right
+        anchor_y: bottom
+  lights: 
+    light1: 0
+    light2: 0 
+    light3: ff 
+
+- duration: 200ms
+  slides:
+    mission_pinball2:
+      widgets:
+      # - type: image
+        # image: Idle4
+      - type: text
+        text: (score)
+        number_grouping: true
+        min_digits: 2
+        z: 10
+        y: 20
+        style: point_display
+      - type: text
+        text: PLAYER (number)
+        z: 10
+        y: 0
+        x: 1
+        style: status_display
+        anchor_x: left
+        anchor_y: bottom
+      - type: text
+        text: BALL (ball)
+        z: 10
+        y: 0
+        x: right
+        style: status_display
+        anchor_x: right
+        anchor_y: bottom
+  lights: 
+    light1: 0 
+    light2: ff
+    light3: 0 
+    
