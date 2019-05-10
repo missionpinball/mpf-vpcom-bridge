@@ -88,6 +88,8 @@ class Controller:
         'ChangedSolenoids',
         'ChangedGIStrings',
         'ChangedLamps',
+        'ChangedLEDs',
+        'ChangedFlashers',
         'HardwareRules',
         'GetMech'
     ]
@@ -97,6 +99,8 @@ class Controller:
         'ChangedSolenoids',
         'ChangedLamps',
         'ChangedGIStrings',
+        'ChangedLEDs',
+        'ChangedFlashers',
         'HardwareRules',
         'GetMech'
     ]
@@ -241,6 +245,14 @@ class Controller:
     def ChangedGIStrings(self):
         """Return a list of changed GI strings."""
         return self._dispatch_to_mpf("changed_gi_strings")
+
+    def ChangedLEDs(self):
+        """Return a list of changed lamps."""
+        return self._dispatch_to_mpf("changed_leds")
+
+    def ChangedFlashers(self):
+        """Return a list of changed GI strings."""
+        return self._dispatch_to_mpf("changed_flashers")
 
     def HardwareRules(self):
         """Return a list of MPF Hardware Rules for autofire coils."""

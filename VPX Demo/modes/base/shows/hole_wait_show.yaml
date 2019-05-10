@@ -1,0 +1,12 @@
+#show_version=5
+- duration: 1s
+  flashers: light_hole
+- duration: 750ms      
+  flashers: light_hole
+- duration: 500ms
+  flashers: light_hole
+- duration: 250ms
+  flashers: light_hole
+- duration: 50ms
+  flashers: light_hole
+  

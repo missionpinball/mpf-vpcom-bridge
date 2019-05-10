@@ -1,0 +1,221 @@
+#config_version=5
+hardware:
+    platform: virtual_pinball
+
+switches:
+    s_startgame:
+        number: 0
+        tags: start
+    s_trough_1:
+        number: tr1
+    s_trough_2:
+        number: tr2
+    s_trough_3:
+        number: tr3
+    s_leftflipper:
+        number: 2   
+        tags: left_flipper    
+    s_rightflipper:
+        number: 3 
+        tags: right_flipper
+    s_leftsling:
+        number: 4
+    s_rightsling:
+        number: 5
+    s_bumper:
+        number: 6
+    s_plunger_lane:
+        number: 7
+        tags: plunger_lane
+    s_right_hole:
+        number: hole
+    s_top_rollover_a:
+        number: swa
+    s_top_rollover_b:
+        number: swb
+    s_top_rollover_c:
+        number: swc
+    s_launch:
+        number: 8
+    s_left_inlane:
+        number: 9
+    s_right_inlane:
+        number: 10
+    s_standup_target:
+        number: 11
+    s_enter_playfield:
+        number: 12
+        type: 'NC'
+
+coils:
+    c_ballrelease:
+        number: coil1
+        default_pulse_ms: 100 
+    c_leftflipper:
+        number: coil2
+        default_pulse_ms: 100
+    c_rightflipper:
+        number: coil3
+        default_pulse_ms: 100
+    c_leftflipper_hold:
+        number: 42
+        default_hold_power: 0.25
+        allow_enable: true
+    c_rightflipper_hold:
+        number: 43
+        default_hold_power: 0.25
+        allow_enable: true
+
+    c_leftsling:
+        number: coil4
+        default_pulse_ms: 100 
+    c_rightsling:
+        number: coil5
+        default_pulse_ms: 100 
+    c_bumper:
+        number: coil6
+        default_pulse_ms: 100 
+    c_plunger_eject:
+        number: coil7
+        default_pulse_ms: 100
+    c_right_hole:
+        number: coil8
+        default_pulse_ms: 100
+        
+lights:
+  light1:
+    number: l-1
+    subtype: led
+  light2:
+    number: l-2
+    subtype: led
+  light3:
+    number: l-3
+    subtype: led
+  light_a:
+    number: l-4 
+  light_b:
+    number: l-5 
+  light_c:
+    number: l-6 
+  light_target5k:
+    number: l-5k
+  light_hole:
+    number: 2
+    subtype: flasher
+  test_light2:
+    number: 15
+    subtype: matrix
+  test_gi:
+    number: gi1
+    subtype: gi
+
+playfields: 
+  playfield: 
+    default_source_device: bd_trough 
+    tags: default
+
+autofire_coils:
+    left_slingshot:
+        coil: c_leftsling
+        switch: s_leftsling
+    right_slingshot:
+        coil: c_rightsling
+        switch: s_rightsling
+    jet:
+        coil: c_bumper
+        switch: s_bumper
+
+flippers:
+    left_flipper:
+        main_coil: c_leftflipper
+        hold_coil: c_leftflipper_hold
+        activation_switch: s_leftflipper
+        # enable_events: machine_reset_phase_3
+    right_flipper:
+        main_coil: c_rightflipper
+        hold_coil: c_rightflipper_hold
+        activation_switch: s_rightflipper
+        # enable_events: machine_reset_phase_3
+
+ball_devices:
+  bd_trough:
+    tags: trough, home, drain
+    ball_switches: s_trough_1, s_trough_2, s_trough_3
+    eject_coil: c_ballrelease
+    eject_targets: bd_plunger
+    entrance_count_delay: 300ms
+  bd_plunger:
+    ball_switches: s_plunger_lane
+    entrance_count_delay: 300ms
+    eject_timeouts: 3s
+    eject_coil: c_plunger_eject
+    player_controlled_eject_event: s_launch
+    debug: true
+  bd_right_hole:
+    ball_switches: s_right_hole
+    entrance_count_delay: 300ms
+    eject_timeouts: 2s
+    eject_coil: c_right_hole
+
+light_player:
+    ball_starting: 
+        test_gi: ff
+    ball_ending: 
+        test_gi: 0
+
+window:
+  width: 774
+  height: 200
+  title: Mission Pinball Framework
+  resizable: true
+  fullscreen: false
+  borderless: false
+  exit_on_escape: true
+  source_display: window
+
+displays:
+  window:
+    width: 774
+    height: 200
+  dmd:
+    width: 128
+    height: 32
+    default: true
+
+slides:
+  window_slide:
+    - type: display
+      width: 768
+      height: 192
+      source_display: dmd
+      
+      effects:
+      - type: dmd
+        dot_color: ff5500
+        background_color: 220000
+        dot_filter: True
+    - type: rectangle
+      width: 772
+      height: 196
+      color: orange
+
+slide_player:
+  init_done: 
+    window_slide:
+      target: window
+
+widget_styles:    
+  point_display:
+    font_name: Quadrit
+    font_size: 10
+    adjust_top: 2
+    adjust_bottom: 3
+  status_display:
+    font_name: Quadrit
+    font_size: 5
+
+modes:
+  - attract
+  - base
+  - rolloverlit
