@@ -13,10 +13,10 @@ switches:
     s_trough_3:
         number: tr3
     s_leftflipper:
-        number: 2   
-        tags: left_flipper    
+        number: 2
+        tags: left_flipper
     s_rightflipper:
-        number: 3 
+        number: 3
         tags: right_flipper
     s_leftsling:
         number: 4
@@ -46,11 +46,17 @@ switches:
     s_enter_playfield:
         number: 12
         type: 'NC'
+    s_drop_target_1:
+        number: 21
+    s_drop_target_2:
+        number: 22
+    s_spinner:
+        number: 23
 
 coils:
     c_ballrelease:
         number: coil1
-        default_pulse_ms: 100 
+        default_pulse_ms: 100
     c_leftflipper:
         number: coil2
         default_pulse_ms: 100
@@ -68,20 +74,40 @@ coils:
 
     c_leftsling:
         number: coil4
-        default_pulse_ms: 100 
+        default_pulse_ms: 100
     c_rightsling:
         number: coil5
-        default_pulse_ms: 100 
+        default_pulse_ms: 100
     c_bumper:
         number: coil6
-        default_pulse_ms: 100 
+        default_pulse_ms: 100
     c_plunger_eject:
         number: coil7
         default_pulse_ms: 100
     c_right_hole:
         number: coil8
         default_pulse_ms: 100
-        
+    c_drop_target_reset:
+      number: coil_9
+      default_pulse_ms: 100  # be sure to set this to at least 100ms so that it pulses long enough on a ball loss to reset the drop targets
+
+drop_targets: # this configs each switch to a drop target
+  dtC:
+    switch:  s_drop_target_1
+  dtM:
+    switch: s_drop_target_2
+
+
+drop_target_banks: # this assigns the drop targets to their bank and sets parameters
+  dt_bank:
+    drop_targets: dtC, dtM
+    reset_coils: c_drop_target_reset
+    reset_on_complete: 100ms # this has to be at least 100ms or it will be too short for VPX to see on a ball draiin
+    reset_events:
+      - drop_target_bank_dt_bank_down
+      - ball_starting
+      - machine_reset_phase_3
+
 lights:
   light1:
     number: l-1
@@ -93,11 +119,11 @@ lights:
     number: l-3
     subtype: led
   light_a:
-    number: l-4 
+    number: l-4
   light_b:
-    number: l-5 
+    number: l-5
   light_c:
-    number: l-6 
+    number: l-6
   light_target5k:
     number: l-5k
   light_hole:
@@ -109,10 +135,22 @@ lights:
   test_gi:
     number: gi1
     subtype: gi
+  light_dt:
+    number: l_dt
+  light_spinner1:
+    number: l_spinner1
+  light_spinner2:
+    number: l_spinner2
+  light_spinner3:
+    number: l_spinner3
+  light_spinner4:
+    number: l_spinner4
 
-playfields: 
-  playfield: 
-    default_source_device: bd_trough 
+
+
+playfields:
+  playfield:
+    default_source_device: bd_trough
     tags: default
 
 autofire_coils:
@@ -159,9 +197,9 @@ ball_devices:
     eject_coil: c_right_hole
 
 light_player:
-    ball_starting: 
+    ball_starting:
         test_gi: ff
-    ball_ending: 
+    ball_ending:
         test_gi: 0
 
 window:
@@ -189,7 +227,7 @@ slides:
       width: 768
       height: 192
       source_display: dmd
-      
+
       effects:
       - type: dmd
         dot_color: ff5500
@@ -201,11 +239,11 @@ slides:
       color: orange
 
 slide_player:
-  init_done: 
+  init_done:
     window_slide:
       target: window
 
-widget_styles:    
+widget_styles:
   point_display:
     font_name: Quadrit
     font_size: 10

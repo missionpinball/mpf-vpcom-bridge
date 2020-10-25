@@ -1,0 +1,38 @@
+events: {}
+player: {}
+shots:
+  bumper: 135
+  dtC: 4
+  dtM: 4
+  hole: 20
+  linlane: 11
+  lsling: 50
+  rinlane: 25
+  rollover_a: 36
+  rollover_b: 77
+  rollover_c: 35
+  rsling: 60
+  target: 39
+switches:
+  s_bumper: 135
+  s_drop_target_1: 172
+  s_drop_target_2: 171
+  s_enter_playfield: 101
+  s_launch: 0
+  s_left_inlane: 11
+  s_leftflipper: 319
+  s_leftsling: 50
+  s_plunger_lane: 103
+  s_right_hole: 20
+  s_right_inlane: 25
+  s_rightflipper: 347
+  s_rightsling: 60
+  s_spinner: 352
+  s_standup_target: 39
+  s_startgame: 14
+  s_top_rollover_a: 36
+  s_top_rollover_b: 77
+  s_top_rollover_c: 35
+  s_trough_1: 103
+  s_trough_2: 131
+  s_trough_3: 139

@@ -1,20 +1,33 @@
 #config_version=5
+
 mode:
     start_events: ball_starting
-        
-show_player:
-    mode_base_started: base_display_loop
-    start_hole_wait_show: 
-        hole_wait_show: 
-            loops: 0
-            events_when_completed: hole_wait_show_ended
 
-queue_relay_player: 
-    balldevice_bd_right_hole_ball_eject_attempt: 
+show_player:
+  mode_base_started: base_display_loop
+  start_hole_wait_show:
+    hole_wait_show:
+      loops: 0
+      events_when_completed: hole_wait_show_ended
+  advance_lane{count==1}:
+    1_on: play
+    4_on: stop
+  advance_lane{count==2}:
+    2_on: play
+    1_on: stop
+  advance_lane{count==3}:
+    3_on: play
+    2_on: stop
+  advance_lane{count==4}:
+    4_on: play
+    3_on: stop
+
+queue_relay_player:
+    balldevice_bd_right_hole_ball_eject_attempt:
         post: start_hole_wait_show
         wait_for: hole_wait_show_ended
 
-variable_player: 
+variable_player:
     bumper_hit:
         score: 500
     rsling_hit:
@@ -22,17 +35,17 @@ variable_player:
     lsling_hit:
         score: 100
     rollover_a_unlit_hit:
-        score: 50 
+        score: 50
     rollover_a_lit_hit:
-        score: 1000 
+        score: 1000
     rollover_b_unlit_hit:
-        score: 50 
+        score: 50
     rollover_b_lit_hit:
-        score: 1000 
+        score: 1000
     rollover_c_unlit_hit:
-        score: 50 
+        score: 50
     rollover_c_lit_hit:
-        score: 1000 
+        score: 1000
     rinlane_hit:
         score: 200
     linlane_hit:
@@ -41,8 +54,26 @@ variable_player:
         score: 2500
     target_hit:
         score: 500
-            
-        
+    s_drop_target_1_hit:
+        score: 100
+    s_drop_target_2_hit:
+        score: 100
+    s_spinner_active:
+        score: 10
+    drop_target_bank_dt_bank_down:
+        score: 1000
+
+counters:
+  spinner_rotations:
+    count_events: s_spinner_active
+    count_complete_value: 4
+    starting_count: 0
+    direction: up
+    persist_state: true
+    events_when_hit: advance_lane
+    reset_on_complete: true
+    disable_on_complete: false
+
 shots:
     bumper:
         switch: s_bumper
@@ -53,18 +84,18 @@ shots:
     rollover_a:
         switch: s_top_rollover_a
         profile: rollovers
-        show_tokens: 
+        show_tokens:
             light: light_a
     rollover_b:
         switch: s_top_rollover_b
         profile: rollovers
-        show_tokens: 
+        show_tokens:
             light: light_b
     rollover_c:
         switch: s_top_rollover_c
         profile: rollovers
-        show_tokens: 
-            light: light_c      
+        show_tokens:
+            light: light_c
     linlane:
         switch: s_left_inlane
     rinlane:
@@ -73,11 +104,11 @@ shots:
         switch: s_standup_target
     hole:
         switch: s_right_hole
-        
+
 shot_groups:
     rollovers:
         shots: rollover_a, rollover_b , rollover_c
-        enable_events: ball_started 
+        enable_events: ball_started
         disable_events: ball_ending
         reset_events: target_hit
         rotate_left_events: s_leftflipper_active
@@ -85,10 +116,9 @@ shot_groups:
 
 shot_profiles:
     rollovers:
-        states: 
-        - name: unlit 
+      states:
+        - name: unlit
           show: off
-        - name: lit 
-          show: on 
-        loop: yes          
-            
+        - name: lit
+          show: on
+      loop: True
