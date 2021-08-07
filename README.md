@@ -8,7 +8,18 @@ hardware:
     platform: virtual_pinball
  
 3. In VPX edit script and replace the controller with:
+```
 Set Controller = CreateObject(“MPF.Controller”)
+```
+
+4. If your mpf instance is running on a different machine than the one running Visual Pinball then tell the bridge where to connect using the run command parameters
+```
+#Ex 1 : Different machine on port 5051
+Controller.Run "mypinball"
+
+#Ex 2 : Different machine and different port
+Controller.Run "mypinball", 1337
+```
 
 To run a game:
 

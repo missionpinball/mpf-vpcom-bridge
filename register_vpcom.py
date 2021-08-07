@@ -140,23 +140,19 @@ class Controller:
         logging.getLogger('vpcom').info("PrintGlobal called.")
         return True
 
-    def _connect(self):
+    def _connect(self, addr, port):
         """Connect to MPF."""
         try:
-            reader, writer = self.loop.run_until_complete(asyncio.open_connection("localhost", 5051))
+            reader, writer = self.loop.run_until_complete(asyncio.open_connection(addr, port))
             self.bcp_client = AsyncioBcpClientSocket(writer, reader)
         except Exception as e:
             raise COMException(desc="Failed to connect to MPF: {}".format(e), scode=winerror.E_FAIL)
 
-    def Run(self, extra_arg=None):
+    def Run(self, addr="localhost", port=5051):
         """Connect to MPF."""
-        if extra_arg is not None:
-            logging.getLogger('vpcom').info("Run received extra arg!?")
-            logging.getLogger('vpcom').info("Arg was {0}".format(extra_arg))
+        logging.getLogger('vpcom').info("Starting bridge. Connecting to {}:{}".format(addr,port))
 
-        logging.getLogger('vpcom').info("Starting bridge. Connecting to localhost:5051")
-
-        self._connect()
+        self._connect(addr, port)
 
         self.bcp_client.send("vpcom_bridge", {"subcommand": "start"})
         self.loop.run_until_complete(self.bcp_client.wait_for_response("vpcom_bridge_response"))
