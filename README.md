@@ -12,7 +12,15 @@ hardware:
 Set Controller = CreateObject(“MPF.Controller”)
 ```
 
-4. If your mpf instance is running on a different machine than the one running Visual Pinball then tell the bridge where to connect using the run command parameters
+4. If your mpf instance is running on a different machine than the machine running Visual Pinball then tell the bridge where to connect using the Controller.Run() command parameters
+- Default BCP server will listen on the loopbak/localhost interface so In order for this to work you need to tell your bcp server to listen on external network interface by altering your config.yaml file as following
+```
+bcp:
+    servers:
+        url_style:
+            ip: 0.0.0.0
+```
+- Update your table script to specify the address and/or port of your server in the 
 ```
 #Ex 1 : Different machine on port 5051
 Controller.Run "mypinball"
@@ -20,6 +28,7 @@ Controller.Run "mypinball"
 #Ex 2 : Different machine and different port
 Controller.Run "mypinball", 1337
 ```
+
 
 To run a game:
 
