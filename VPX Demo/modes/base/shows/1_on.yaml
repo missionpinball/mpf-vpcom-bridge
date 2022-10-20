@@ -1,0 +1,6 @@
+#show_version=5
+
+- duration: 1
+  lights:
+    light_spinner1: on
+    light_spinner4: off
