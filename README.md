@@ -1,12 +1,12 @@
 Bridge Installation:
- 
+
 1. Register mpf-visual-pinball bridge (run cmd shell as Administrator):
 python register_vpcom.py –register
- 
+
 2. Create Your MPF table folder. In Your config.yaml enter:
 hardware:
     platform: virtual_pinball
- 
+
 3. In VPX edit script and replace the controller with:
 ```
 Set Controller = CreateObject(“MPF.Controller”)
@@ -28,6 +28,17 @@ Controller.Run "mypinball"
 #Ex 2 : Different machine and different port
 Controller.Run "mypinball", 1337
 ```
+
+
+
+Instructions for MPF installed via `pipx`:
+
+```
+pipx inject mpf ./
+
+mpf_vpcom_bridge.exe
+```
+
 
 
 To run a game:
