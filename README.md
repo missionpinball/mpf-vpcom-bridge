@@ -43,9 +43,9 @@ pipx inject mpf ./
 ```
 mpf_vpcom_bridge.exe
 ```
-NOTE: The exe may not be included in the PATH for Windows by default. It may be located in the Scripts folder of the MPF venv, for example: C:\Users\Me\.local\pipx\venvs\mpf\Scripts\mpf_vpcom_bridge.exe where Me is the Windows username for the session.
+NOTE: The exe may not be included in the PATH for Windows by default. It may be located in the Scripts folder of the MPF venv, for example: C:\Users\Me\\.local\pipx\venvs\mpf\Scripts\mpf_vpcom_bridge.exe where Me is the Windows username for the session.
 
-4. The bridge can be unregistered be passing the following argument to the exe as Administrator:
+4. The bridge can be unregistered by passing the following argument to the exe as Administrator:
 ```
 mpf_vpcom_bridge.exe --unregister
 ```
