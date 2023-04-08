@@ -32,14 +32,23 @@ Controller.Run "mypinball", 1337
 
 
 Instructions for MPF installed via `pipx`:
+The latest official installation instructions for MPF utilize `pipx` to create a virtual environment (venv) for MPF to run in. To install the mpf-visual-pinball bridge, it must be injected into the MPF venv.
+1.  Open a command prompt and change directories (cd) to the folder containing the mpf_vpcom_bridge source code.
 
+2. Run the following command to inject mpf_vpcom_bridge into the MPF venv.
 ```
 pipx inject mpf ./
-
+```
+3. To register the bridge with Windows as a COM object, the following exe must be run as Administrator. 
+```
 mpf_vpcom_bridge.exe
 ```
+NOTE: The exe may not be included in the PATH for Windows by default. It may be located in the Scripts folder of the MPF venv, for example: C:\Users\Me\\.local\pipx\venvs\mpf\Scripts\mpf_vpcom_bridge.exe where Me is the Windows username for the session.
 
-
+4. If no longer needed, the bridge can be unregistered by passing the following argument to the exe as Administrator:
+```
+mpf_vpcom_bridge.exe --unregister
+```
 
 To run a game:
 

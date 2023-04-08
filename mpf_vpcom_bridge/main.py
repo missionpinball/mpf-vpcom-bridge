@@ -90,6 +90,7 @@ class Controller:
         'ChangedGIStrings',
         'ChangedLamps',
         'ChangedLEDs',
+        'ChangedBrightnessLEDs',
         'ChangedFlashers',
         'HardwareRules',
         'GetMech'
@@ -101,6 +102,7 @@ class Controller:
         'ChangedLamps',
         'ChangedGIStrings',
         'ChangedLEDs',
+        'ChangedBrightnessLEDs',
         'ChangedFlashers',
         'HardwareRules',
         'GetMech'
@@ -246,7 +248,11 @@ class Controller:
     def ChangedLEDs(self):
         """Return a list of changed lamps."""
         return self._dispatch_to_mpf("changed_leds")
-
+        
+    def ChangedBrightnessLEDs(self):
+        """Return a list of changed LEDs with brightness vlaues as floats."""
+        return self._dispatch_to_mpf("changed_brightness_leds")
+        
     def ChangedFlashers(self):
         """Return a list of changed GI strings."""
         return self._dispatch_to_mpf("changed_flashers")
